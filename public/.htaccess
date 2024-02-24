@@ -1,0 +1,52 @@
+<IfModule mod_rewrite.c>
+    <IfModule mod_negotiation.c>
+        Options -MultiViews -Indexes
+    </IfModule>
+    
+    RewriteEngine On
+
+    # Handle Authorization Header
+    RewriteCond %{HTTP:Authorization} .
+    RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
+    # Redirect Trailing Slashes If Not A Folder...
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_URI} (.+)/$
+    RewriteRule ^ %1 [L,R=301]
+
+    # Send Requests To Front Controller...
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule ^ index.php [L]
+</IfModule>
+
+
+<ifModule mod_headers.c>
+    # Header set Strict-Transport-Security "max-age=31536000" env=HTTPS
+    # Header unset X-Frame-Options "deny"
+    # Header always set X-Frame-Options ALLOW-FROM https://cares.goa.gov.in/
+    # Header setifempty Referrer-Policy: same-origin
+    # Header unset X-Frame-Options "SAMEORIGIN"
+    # Header set X-Frame-Options ALLOW
+    # Header set X-Frame-Options DENY
+    # Header always set X-Frame-Options "SAMEORIGIN"
+    Header always set X-Frame-Options "allow"
+
+    Header set X-XSS-Protection "1; mode=block"
+    Header set X-Permitted-Cross-Domain-Policies "none"
+    Header set Referrer-Policy "no-referrer"
+    Header set X-Content-Type-Options: nosniff
+
+</ifModule>
+
+
+
+<IfModule mod_headers.c>
+
+    #  Header set X-Frame-Options "SAMEORIGIN"
+
+     <FilesMatch "\.(appcache|atom|bbaw|bmp|crx|css|cur|eot|f4[abpv]|flv|geojson|gif|htc|ico|jpe?g|js|json(ld)?|m4[av]|manifest|map|mp4|oex|og[agv]|opus|otf|pdf|png|rdf|rss|safariextz|svgz?|swf|topojson|tt[cf]|txt|vcard|vcf|vtt|webapp|web[mp]|webmanifest|woff2?|xloc|xml|xpi)$">
+         Header unset X-Frame-Options
+     </FilesMatch>
+
+</IfModule>
